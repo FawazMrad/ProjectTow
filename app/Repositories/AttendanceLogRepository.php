@@ -33,4 +33,11 @@ class AttendanceLogRepository implements AttendanceLogRepositoryInterface
         $log = AttendanceLog::find($id);
         return $log ? $log->delete() : false;
     }
+    public function getLogsByTypeAndDateRange(string $userType, $startDate, $endDate)
+    {
+        return AttendanceLog::with('user')
+            ->where('user_type', $userType)
+            ->whereBetween('check_in', [$startDate, $endDate])
+            ->get();
+    }
 }

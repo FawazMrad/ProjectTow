@@ -13,9 +13,13 @@ interface UserRepositoryInterface
 
     public function findById(int $id): ?User;
 
+    public function findDoctorByEmail(string $email): ?User;
     public function create(array $data): User;
 
     public function update(int $id, array $data): bool;
 
     public function delete(int $id): bool;
+    public function updatePassword(User $user, string $hashedPassword): bool;
+
+    public function updateEmail(User $user, string $newEmail): bool;
 }

@@ -11,4 +11,6 @@ interface AttendanceLogRepositoryInterface
     public function create(array $data): AttendanceLog;
     public function update(int $id, array $data): bool;
     public function delete(int $id): bool;
+    public function getLogsByTypeAndDateRange(string $userType, $startDate, $endDate);
+
 }

@@ -17,6 +17,12 @@ class UserRepository implements UserRepositoryInterface
         return User::find($id);
     }
 
+    public function findDoctorByEmail(string $email): ?User
+    {
+        return User::where('email', $email)
+            ->where('role', 'doctor')
+            ->first();
+    }
     public function create(array $data): User
     {
         return User::create($data);
@@ -32,5 +38,25 @@ class UserRepository implements UserRepositoryInterface
     {
         $user = User::find($id);
         return $user ? $user->delete() : false;
+    }
+    public function indexReceptionists(): iterable
+    {
+        return User::where('role', 'RECEPTIONIST')->get();
+    }
+    public function getLogs(int $id)
+    {
+        $user=$this->findById($id);
+        return $user->attendanceLogs()->get()->sortByDesc('created_at');
+    }
+    public function updatePassword(User $user, string $hashedPassword): bool
+    {
+        $user->password = $hashedPassword;
+        return $user->save();
+    }
+
+    public function updateEmail(User $user, string $newEmail): bool
+    {
+        $user->email = $newEmail;
+        return $user->save();
     }
 }
