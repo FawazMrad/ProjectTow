@@ -27,8 +27,8 @@ class AppointmentService
         return $data=$this->appointmentRepository->getDoctorUpcomingAppointments($doctor);
 
     }
-    public function cancelAppointment($doctorId,$appointmentId)
+    public function updateAppointment($appointmentId,$data)
     {
-        return $this->appointmentRepository->update($appointmentId,['status'=>'مرفوض']);
+        return $this->appointmentRepository->update($appointmentId,$data);
     }
 }

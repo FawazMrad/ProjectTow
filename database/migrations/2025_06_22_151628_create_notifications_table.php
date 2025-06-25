@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->nullable()->constrained('users')->onDelete('cascade');
             $table->foreignId('patient_id')->nullable()->constrained('patients')->onDelete('set null');
+            $table->foreignId('appointment_id')->nullable()->constrained('appointments')->onDelete('set null');
             $table->string('title');
             $table->text('body');
             $table->enum('channel', ['IN_APP', 'SMS', 'WHATSAPP', 'CALL']);

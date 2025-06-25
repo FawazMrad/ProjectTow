@@ -18,7 +18,9 @@ class Notification extends Model
         'channel',
         'status',
         'is_scheduled',
-        'sent_at'
+        'sent_at',
+        'is_reception_notification',
+        'appointment_id'
     ];
 
     // Channel constants
@@ -40,5 +42,9 @@ class Notification extends Model
     public function patient(): BelongsTo
     {
         return $this->belongsTo(Patient::class);
+    }
+    public function appointment(): BelongsTo
+    {
+        return $this->belongsTo(Appointment::class);
     }
 }

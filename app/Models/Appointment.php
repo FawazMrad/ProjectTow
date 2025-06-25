@@ -73,4 +73,8 @@ public static array $statusMap = [
     {
         return $this->hasMany(AppointmentImage::class);
     }
+    public function notifications(): HasMany
+    {
+        return $this->hasMany(Notification::class);
+    }
 }

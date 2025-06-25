@@ -14,4 +14,5 @@ interface WeeklyScheduleRepositoryInterface
     public function delete(int $id): bool;
 
     //public function updateWeeklySchedule(int $weeklyScheduleId, array $weeklyScheduleData);
+    public function getWorkDays();
 }

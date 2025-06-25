@@ -38,5 +38,10 @@ class WeeklyScheduleController extends Controller
         }
         return response()->json(["message" => "Conflict detected. Receptionist notified to handle rescheduling."], 409);
     }
+    public function getWorkDays(Request $request)
+    {
+        $data=$this->weeklyScheduleService->getWorkDays();
+        return response()->json($data, 200);
+    }
 
 }

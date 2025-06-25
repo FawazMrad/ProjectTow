@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\WeeklySchedule;
 use App\Repositories\Interfaces\AppointmentRepositoryInterface;
 use App\Repositories\Interfaces\NotificationRepositoryInterface;
 use App\Repositories\Interfaces\WeeklyScheduleRepositoryInterface;
@@ -63,6 +64,10 @@ class WeeklyScheduleService
                 'sent_at' => null,
             ]);
         }
+    }
+    public function getWorkDays()
+    {
+        return $this->weeklyScheduleRepository->getWorkDays();
     }
 
 }

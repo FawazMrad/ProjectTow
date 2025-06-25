@@ -113,7 +113,7 @@ class AppointmentRepository implements AppointmentRepositoryInterface
         $startOfDay = Carbon::today()->startOfDay();
         $endOfDay = Carbon::today()->endOfDay();
 
-        return $doctor->doctorAppointments()
+        return $doctor->doctorAppointments()->with('patient')
             ->whereBetween('start_time', [$startOfDay, $endOfDay])
             ->where('status', Appointment::$statusMap['accepted'])
             ->get()->sortBy('start_time');
@@ -127,6 +127,11 @@ class AppointmentRepository implements AppointmentRepositoryInterface
             ->where('start_time', '>=',$startOfDay)
             ->get()->sortBy('start_time')
             ->groupBy('status');
+    }
+    public function getAppointmentPatient(int $appointmentId)
+    {
+        $appointment = $this->findById($appointmentId);
+        return $appointment->patient()->first();
     }
 
 

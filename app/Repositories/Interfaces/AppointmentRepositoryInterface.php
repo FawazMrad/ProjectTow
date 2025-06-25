@@ -28,5 +28,6 @@ interface AppointmentRepositoryInterface
     public function getDoctorTodayAppointments(User $doctor);
 
     public function getDoctorUpcomingAppointments(User $doctor);
+    public function getAppointmentPatient(int $appointmentId);
 
 }

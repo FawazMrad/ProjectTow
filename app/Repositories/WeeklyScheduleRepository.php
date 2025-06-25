@@ -40,4 +40,8 @@ class WeeklyScheduleRepository implements WeeklyScheduleRepositoryInterface
         $schedule = WeeklySchedule::find($id);
         return $schedule ? $schedule->delete() : false;
     }
+    public function getWorkDays(){
+        return WeeklySchedule::all()->where('is_active',1)->pluck('day_of_week')->toArray();
+    }
+
 }
