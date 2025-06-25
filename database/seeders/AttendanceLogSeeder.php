@@ -15,20 +15,20 @@ class AttendanceLogSeeder extends Seeder
     {
         $doctor = \App\Models\User::factory()->create([
             'role' => 'DOCTOR',
-            'user_name' => 'Dr. Ahmad Said',
+            'user_name' => 'احمد سعيد',
             'email' => 'doctor@example.com',
         ]);
 
         // 👤 Create Receptionists
         $receptionist1 = \App\Models\User::factory()->create([
             'role' => 'RECEPTIONIST',
-            'user_name' => 'Receptionist Layla',
+            'user_name' => 'ليلى عانب',
             'email' => 'layla@example.com',
         ]);
 
         $receptionist2 = \App\Models\User::factory()->create([
             'role' => 'RECEPTIONIST',
-            'user_name' => 'Receptionist Huda',
+            'user_name' => 'فادي سارى',
             'email' => 'huda@example.com',
         ]);
 

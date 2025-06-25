@@ -2,8 +2,10 @@
 
 namespace App\Repositories;
 
+use App\Models\Appointment;
 use App\Models\User;
 use App\Repositories\Interfaces\UserRepositoryInterface;
+use Carbon\Carbon;
 
 class UserRepository implements UserRepositoryInterface
 {
@@ -59,4 +61,8 @@ class UserRepository implements UserRepositoryInterface
         $user->email = $newEmail;
         return $user->save();
     }
+    public function getWeeklySchedules(User $doctor){
+        return $doctor->weeklySchedules()->get();
+    }
+
 }

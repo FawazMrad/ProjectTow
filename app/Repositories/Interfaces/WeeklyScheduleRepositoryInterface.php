@@ -12,4 +12,6 @@ interface WeeklyScheduleRepositoryInterface
     public function create(array $data): WeeklySchedule;
     public function update(int $id, array $data): bool;
     public function delete(int $id): bool;
+
+    //public function updateWeeklySchedule(int $weeklyScheduleId, array $weeklyScheduleData);
 }

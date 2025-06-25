@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\User;
 use App\Repositories\Interfaces\AppointmentRepositoryInterface;
 
 class AppointmentService
@@ -12,6 +13,22 @@ class AppointmentService
     {
         $this->appointmentRepository = $appointmentRepository;
     }
+    public function getAppointment($doctorId,$appointmentId)
+    {
+        return $this->appointmentRepository->getAppointment($doctorId,$appointmentId);
+    }
 
-    // Business logic will be added here later
+    public function getDoctorTodayAppointments(User $doctor){
+        return $data=$this->appointmentRepository->getDoctorTodayAppointments($doctor);
+    }
+
+    public function getDoctorUpcomingAppointments(mixed $doctor)
+    {
+        return $data=$this->appointmentRepository->getDoctorUpcomingAppointments($doctor);
+
+    }
+    public function cancelAppointment($doctorId,$appointmentId)
+    {
+        return $this->appointmentRepository->update($appointmentId,['status'=>'مرفوض']);
+    }
 }

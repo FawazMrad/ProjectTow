@@ -23,11 +23,11 @@ return new class extends Migration
             $table->dateTime('end_time');
             $table->text('notes')->nullable();
             $table->enum('status', [
-                'PENDING', 'APPROVED', 'SCHEDULED', 'REJECTED',
-                'COMPLETED', 'ABSENCE', 'WITHDRAWN'
-            ])->default('PENDING');
+                'معلق', 'مقبول', 'مؤجل', 'مرفوض',
+                'كامل', 'غياب', 'تم التخلي'
+            ])->default('معلق');
             $table->enum('type', [
-                'TREATMENT', 'CLEANING', 'BEAUTY', 'CHILDREN', 'MEDICAL_STUDY'
+                'علاجي', 'تنضيف', 'تجميل', 'أطفال', 'دراسة طبية'
             ])->nullable();
             $table->timestamps();
 

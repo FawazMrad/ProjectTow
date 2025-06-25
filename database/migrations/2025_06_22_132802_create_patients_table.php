@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('family_id')->nullable()->constrained('families')->onDelete('set null');
             $table->foreignId('medical_study_id')->nullable()->constrained('medical_studies')->onDelete('set null');
             $table->string('phone')->nullable();
-            $table->enum('gender', ['MALE', 'FEMALE']);
+            $table->enum('gender', ['ذكر', 'انثى']);
             $table->text('allergies')->nullable();
             $table->string('full_name');
             $table->integer('points')->default(0);

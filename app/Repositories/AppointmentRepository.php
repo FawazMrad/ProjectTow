@@ -3,10 +3,19 @@
 namespace App\Repositories;
 
 use App\Models\Appointment;
+use App\Models\User;
 use App\Repositories\Interfaces\AppointmentRepositoryInterface;
-
+use App\Repositories\Interfaces\UserRepositoryInterface;
+use Carbon\Carbon;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
+use App\Helpers\ArabicHelper;
 class AppointmentRepository implements AppointmentRepositoryInterface
 {
+    protected UserRepositoryInterface $userRepository;
+    public function __construct(UserRepositoryInterface $userRepository){
+        $this->userRepository = $userRepository;
+    }
     public function all(): iterable
     {
         return Appointment::all();
@@ -48,4 +57,77 @@ class AppointmentRepository implements AppointmentRepositoryInterface
         $appointment = Appointment::find($id);
         return $appointment ? $appointment->delete() : false;
     }
+
+    public function getConflictingAppointments(int $doctorId, string $dayOfWeek, array $newScheduleData): Collection
+    {
+        $dates = collect(range(0, 13))
+            ->map(fn($i) => Carbon::today()->copy()->addDays($i))
+            ->filter(fn($date) => $this->getArabicDayName($date->dayOfWeek) === $dayOfWeek)
+            ->map(fn($d) => $d->toDateString());
+
+        $query = Appointment::query()
+            ->where('doctor_id', $doctorId)
+            ->whereIn('status', ['معلق', 'مقبول'])
+            ->whereIn(DB::raw('DATE(start_time)'), $dates);
+
+        if (isset($newScheduleData['is_active']) && !$newScheduleData['is_active']) {
+            return $query->get();
+        }
+
+        $start = $newScheduleData['start_time'] ?? '00:00:00';
+        $end = $newScheduleData['end_time'] ?? '23:59:59';
+        $breakStart = $newScheduleData['break_start_time'] ?? null;
+        $breakEnd = $newScheduleData['break_end_time'] ?? null;
+
+        return $query->where(function ($q) use ($start, $end, $breakStart, $breakEnd) {
+            $q->whereTime('start_time', '<', $start)
+                ->orWhereTime('end_time', '>', $end);
+
+            if ($breakStart && $breakEnd) {
+                $q->orWhere(function ($q2) use ($breakStart, $breakEnd) {
+                    $q2->whereTime('start_time', '>=', $breakStart)
+                        ->whereTime('start_time', '<', $breakEnd);
+                });
+            }
+        })->get();
+    }
+
+    protected function getArabicDayName(int $dayIndex): string
+    {
+        return [
+            'الاحد',     // 0
+            'الاثنين',   // 1
+            'الثلاثاء',  // 2
+            'الاربعاء',  // 3
+            'الخميس',    // 4
+            'الجمعة',    // 5
+            'السبت',     // 6
+        ][$dayIndex];
+    }
+    public function getAppointment(int $doctorId,int $appointmentId)
+    {
+        return $this->userRepository->findById($doctorId)->doctorAppointments()->find($appointmentId);
+    }
+    public function getDoctorTodayAppointments(User $doctor)
+    {
+        $startOfDay = Carbon::today()->startOfDay();
+        $endOfDay = Carbon::today()->endOfDay();
+
+        return $doctor->doctorAppointments()
+            ->whereBetween('start_time', [$startOfDay, $endOfDay])
+            ->where('status', Appointment::$statusMap['accepted'])
+            ->get()->sortBy('start_time');
+    }
+    public function getDoctorUpcomingAppointments(User $doctor)
+    {
+        $startOfDay = Carbon::today()->startOfDay();
+
+
+        return $doctor->doctorAppointments()
+            ->where('start_time', '>=',$startOfDay)
+            ->get()->sortBy('start_time')
+            ->groupBy('status');
+    }
+
+
 }

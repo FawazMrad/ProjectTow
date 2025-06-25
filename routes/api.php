@@ -11,20 +11,21 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::prefix('web')->middleware('api')->group(function () {
-    // 🟢 Public route (no token)
-    Route::post('doctor/login', [DoctorAuthController::class, 'login']);
 
-    // 🔒 Protected routes (token required)
+    Route::post('doctor-account/login', [DoctorAuthController::class, 'login']);
+
+
     Route::middleware('auth:sanctum')->group(function () {
-        Route::get('homepage/receptionistsCommitment', [HomePageController::class, 'receptionistCommitment']);
+        Route::get('homepage/receptionists-commitment', [HomePageController::class, 'receptionistCommitment']);
         Route::get('homepage/receptionists', [HomePageController::class, 'indexReceptionists']);
         Route::post('receptionist', [\App\Http\Controllers\Web\ReceptionistController::class, 'getReceptionist']);
         Route::post('receptionist/delete', [\App\Http\Controllers\Web\ReceptionistController::class, 'deleteReceptionist']);
-        Route::post('receptionist/getLogs', [\App\Http\Controllers\Web\ReceptionistController::class, 'getLogs']);
+        Route::post('receptionist/get-logs', [\App\Http\Controllers\Web\ReceptionistController::class, 'getLogs']);
         Route::post('receptionist/add', [\App\Http\Controllers\Web\ReceptionistController::class, 'addReceptionist']);
-        Route::post('doctor/changePassword', [\App\Http\Controllers\Auth\DoctorAuthController::class, 'changePassword']);
-        Route::post('doctor/changeEmail', [\App\Http\Controllers\Auth\DoctorAuthController::class, 'changeEmail']);
-        Route::get('doctor/getLogs', [\App\Http\Controllers\Web\DoctorController::class, 'getLogs']);
+        Route::post('doctor-account/change-password', [\App\Http\Controllers\Auth\DoctorAuthController::class, 'changePassword']);
+        Route::post('doctor-account/change-email', [\App\Http\Controllers\Auth\DoctorAuthController::class, 'changeEmail']);
+        Route::get('doctor-account/get-logs', [\App\Http\Controllers\Web\DoctorController::class, 'getLogs']);
+        Route::get('doctor-account/logout', [\App\Http\Controllers\Auth\DoctorAuthController::class, 'logout']);
 
 
     });
@@ -35,16 +36,19 @@ Route::prefix('web')->middleware('api')->group(function () {
 |--------------------------------------------------------------------------
 */
 Route::prefix('doctor')->middleware('api')->group(function () {
-   // public route
+
     Route::post('login', [DoctorAuthController::class, 'login']);
 
-    //protected route
+
     Route::middleware('auth:sanctum')->group(function () {
-        //Route::get('receptionist/commitment', [DoctorProfileController::class, 'show']);
-        // Route::put('doctor/profile', [DoctorProfileController::class, 'update']);
-        // Add more protected web doctor routes here
+        Route::get('weekly-schedule', [\App\Http\Controllers\DoctorApp\WeeklyScheduleController::class, 'index']);
+        Route::post('weekly-schedule/update', [\App\Http\Controllers\DoctorApp\WeeklyScheduleController::class, 'update']);
+        Route::get('appointments/view-today-appointments', [\App\Http\Controllers\DoctorApp\AppointmentController::class, 'viewTodayAppointments']);
+        Route::get('appointments/view-upcoming-appointments', [\App\Http\Controllers\DoctorApp\AppointmentController::class, 'viewUpcomingAppointments']);
+        Route::post('appointments/view-appointment', [\App\Http\Controllers\DoctorApp\AppointmentController::class, 'viewAppointment']);
+        Route::post('appointments/cancel-appointment', [\App\Http\Controllers\DoctorApp\AppointmentController::class, 'cancelAppointment']);
+
     });
-    // Add more doctor routes here
 });
 
 /*

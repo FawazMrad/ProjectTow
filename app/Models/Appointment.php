@@ -25,21 +25,15 @@ class Appointment extends Model
         'type'
     ];
 
-    // Status constants
-    public const STATUS_PENDING = 'PENDING';
-    public const STATUS_APPROVED = 'APPROVED';
-    public const STATUS_SCHEDULED = 'SCHEDULED';
-    public const STATUS_REJECTED = 'REJECTED';
-    public const STATUS_COMPLETED = 'COMPLETED';
-    public const STATUS_ABSENCE = 'ABSENCE';
-    public const STATUS_WITHDRAWN = 'WITHDRAWN';
-
-    // Type constants
-    public const TYPE_TREATMENT = 'TREATMENT';
-    public const TYPE_CLEANING = 'CLEANING';
-    public const TYPE_BEAUTY = 'BEAUTY';
-    public const TYPE_CHILDREN = 'CHILDREN';
-    public const TYPE_MEDICAL_STUDY = 'MEDICAL_STUDY';
+public static array $statusMap = [
+    'accepted' => 'مقبول',
+    'pending' => 'معلق',
+    'rejected' => 'مرفوض',
+    'delayed' => 'مؤجل',
+    'completed' => 'كامل',
+    'absent'   => 'غياب',
+    'cancelled' => 'تم التخلي',
+];
 
     public function patient(): BelongsTo
     {

@@ -22,4 +22,7 @@ interface UserRepositoryInterface
     public function updatePassword(User $user, string $hashedPassword): bool;
 
     public function updateEmail(User $user, string $newEmail): bool;
+
+    public function getWeeklySchedules(User $doctor);
+
 }

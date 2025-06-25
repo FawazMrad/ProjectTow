@@ -73,6 +73,11 @@ class UserService
 
         return $this->userRepository->updateEmail($user, $data['new_email']);
     }
+    public function getWeeklySchedules(User $doctor)
+    {
+        return $this->userRepository->getWeeklySchedules($doctor);
+    }
+
 
 
 }

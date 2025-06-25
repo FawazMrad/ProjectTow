@@ -20,17 +20,6 @@ class WeeklySchedule extends Model
         'is_active'
     ];
 
-    // Define the enum values for day_of_week
-    public const DAYS = [
-        'Monday' => 'Monday',
-        'Tuesday' => 'Tuesday',
-        'Wednesday' => 'Wednesday',
-        'Thursday' => 'Thursday',
-        'Friday' => 'Friday',
-        'Saturday' => 'Saturday',
-        'Sunday' => 'Sunday',
-    ];
-
     public function doctor(): BelongsTo
     {
         return $this->belongsTo(User::class, 'doctor_id');

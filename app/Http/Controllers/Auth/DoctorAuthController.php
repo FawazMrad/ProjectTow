@@ -59,6 +59,18 @@ class DoctorAuthController extends Controller
             ? response()->json(['message' => 'email changed successfully'],200)
             : response()->json(['message' => 'Failed to change email'], 500);
     }
+    public function logout(Request $request)
+    {
+        $token = $request->user()->currentAccessToken();
+
+        if ($token) {
+            $token->delete();
+        }
+
+        return response()->json([
+            'message' => 'Doctor logged out successfully from web',
+        ], 200);
+    }
 
 
 }

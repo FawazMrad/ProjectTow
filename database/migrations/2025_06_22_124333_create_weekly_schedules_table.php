@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->foreignId('doctor_id')->constrained('users')->onDelete('cascade');
             $table->enum('day_of_week', [
-                'Monday', 'Tuesday', 'Wednesday', 'Thursday',
-                'Friday', 'Saturday', 'Sunday'
+                'الاثنين', 'الثلاثاء', 'الاربعاء', 'الخميس',
+                'الجمعة', 'السبت', 'الاحد'
             ]);
             $table->time('start_time');
             $table->time('end_time');
