@@ -13,5 +13,12 @@ class PatientService
         $this->patientRepository = $patientRepository;
     }
 
-    // Business logic will be added here later
+   public function getPatient($patientId)
+   {
+       return $this->patientRepository->findById($patientId);
+
+   }
+   public function create($data){
+    return $this->patientRepository->create($data);
+   }
 }

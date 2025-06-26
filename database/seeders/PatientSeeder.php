@@ -999,7 +999,7 @@ class PatientSeeder extends Seeder
 
         Patient::create([
             'family_id' => null,
-            'medical_study_id' => null,
+            'medical_study_id' => 1,
             'phone' => '0572072507',
             'gender' => 'ذكر',
             'allergies' => null,
@@ -1011,7 +1011,7 @@ class PatientSeeder extends Seeder
 
         Patient::create([
             'family_id' => null,
-            'medical_study_id' => null,
+            'medical_study_id' => 10,
             'phone' => '0516972383',
             'gender' => 'ذكر',
             'allergies' => 'حساسية من الغبار',
@@ -1023,7 +1023,7 @@ class PatientSeeder extends Seeder
 
         Patient::create([
             'family_id' => null,
-            'medical_study_id' => null,
+            'medical_study_id' => 9,
             'phone' => '0515110307',
             'gender' => 'ذكر',
             'allergies' => null,
@@ -1035,7 +1035,7 @@ class PatientSeeder extends Seeder
 
         Patient::create([
             'family_id' => null,
-            'medical_study_id' => null,
+            'medical_study_id' => 8,
             'phone' => '0527769822',
             'gender' => 'انثى',
             'allergies' => 'حساسية من الدواء',
@@ -1047,7 +1047,7 @@ class PatientSeeder extends Seeder
 
         Patient::create([
             'family_id' => null,
-            'medical_study_id' => null,
+            'medical_study_id' => 7,
             'phone' => '0567679214',
             'gender' => 'انثى',
             'allergies' => 'لا يوجد',
@@ -1059,7 +1059,7 @@ class PatientSeeder extends Seeder
 
         Patient::create([
             'family_id' => null,
-            'medical_study_id' => null,
+            'medical_study_id' => 7,
             'phone' => '0574268804',
             'gender' => 'ذكر',
             'allergies' => 'حساسية من الدواء',
@@ -1071,7 +1071,7 @@ class PatientSeeder extends Seeder
 
         Patient::create([
             'family_id' => null,
-            'medical_study_id' => null,
+            'medical_study_id' => 6,
             'phone' => '0551140462',
             'gender' => 'ذكر',
             'allergies' => null,
@@ -1083,7 +1083,7 @@ class PatientSeeder extends Seeder
 
         Patient::create([
             'family_id' => null,
-            'medical_study_id' => null,
+            'medical_study_id' => 5,
             'phone' => '0588226827',
             'gender' => 'انثى',
             'allergies' => 'حساسية من الغبار',
@@ -1095,7 +1095,7 @@ class PatientSeeder extends Seeder
 
         Patient::create([
             'family_id' => null,
-            'medical_study_id' => null,
+            'medical_study_id' => 4,
             'phone' => '0536385966',
             'gender' => 'ذكر',
             'allergies' => 'حساسية من الغبار',
@@ -1107,7 +1107,7 @@ class PatientSeeder extends Seeder
 
         Patient::create([
             'family_id' => null,
-            'medical_study_id' => null,
+            'medical_study_id' => 4,
             'phone' => '0517221867',
             'gender' => 'انثى',
             'allergies' => 'لا يوجد',
@@ -1119,7 +1119,7 @@ class PatientSeeder extends Seeder
 
         Patient::create([
             'family_id' => null,
-            'medical_study_id' => null,
+            'medical_study_id' => 4,
             'phone' => '0568951258',
             'gender' => 'انثى',
             'allergies' => null,
@@ -1131,7 +1131,7 @@ class PatientSeeder extends Seeder
 
         Patient::create([
             'family_id' => null,
-            'medical_study_id' => null,
+            'medical_study_id' => 4,
             'phone' => '0526593357',
             'gender' => 'انثى',
             'allergies' => 'لا يوجد',
@@ -1143,7 +1143,7 @@ class PatientSeeder extends Seeder
 
         Patient::create([
             'family_id' => null,
-            'medical_study_id' => null,
+            'medical_study_id' => 4,
             'phone' => '0563902010',
             'gender' => 'انثى',
             'allergies' => 'حساسية من الدواء',
@@ -1155,7 +1155,7 @@ class PatientSeeder extends Seeder
 
         Patient::create([
             'family_id' => null,
-            'medical_study_id' => null,
+            'medical_study_id' => 3,
             'phone' => '0599546353',
             'gender' => 'ذكر',
             'allergies' => 'حساسية من الدواء',
@@ -1167,7 +1167,7 @@ class PatientSeeder extends Seeder
 
         Patient::create([
             'family_id' => null,
-            'medical_study_id' => null,
+            'medical_study_id' => 2,
             'phone' => '0552215185',
             'gender' => 'ذكر',
             'allergies' => 'حساسية من الدواء',
@@ -1179,7 +1179,7 @@ class PatientSeeder extends Seeder
 
         Patient::create([
             'family_id' => null,
-            'medical_study_id' => null,
+            'medical_study_id' => 2,
             'phone' => '0552524835',
             'gender' => 'ذكر',
             'allergies' => 'حساسية من الدواء',
@@ -1191,7 +1191,7 @@ class PatientSeeder extends Seeder
 
         Patient::create([
             'family_id' => null,
-            'medical_study_id' => null,
+            'medical_study_id' => 1,
             'phone' => '0532977430',
             'gender' => 'ذكر',
             'allergies' => 'حساسية من الدواء',
@@ -1203,7 +1203,7 @@ class PatientSeeder extends Seeder
 
         Patient::create([
             'family_id' => null,
-            'medical_study_id' => null,
+            'medical_study_id' => 1,
             'phone' => '0536450208',
             'gender' => 'انثى',
             'allergies' => 'حساسية من الدواء',

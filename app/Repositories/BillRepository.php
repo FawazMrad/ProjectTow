@@ -9,7 +9,7 @@ class BillRepository implements BillRepositoryInterface
 {
     public function all(): iterable
     {
-        return Bill::all();
+        return Bill::all()->groupBy('payment_status');
     }
 
     public function findById(int $id): ?Bill
@@ -48,4 +48,44 @@ class BillRepository implements BillRepositoryInterface
         $bill = Bill::find($id);
         return $bill ? $bill->delete() : false;
     }
+    public function findByIdWithPayments($billId)
+    {
+        return Bill::where('id',$billId)->with('payments')->get();
+    }
+    public function searchByPatientName(string $name)
+    {
+        return \App\Models\Bill::where(function ($query) use ($name) {
+            // Case 1: Bill has a patient directly
+            $query->whereHas('patient', function ($q) use ($name) {
+                $q->where('full_name', 'LIKE', '%' . $name . '%');
+            });
+
+            // Case 2: Bill has no patient_id but has appointments -> patient
+            $query->orWhere(function ($q) use ($name) {
+                $q->whereNull('patient_id')
+                    ->whereHas('appointments.patient', function ($q2) use ($name) {
+                        $q2->where('full_name', 'LIKE', '%' . $name . '%');
+                    });
+            });
+        })
+
+            ->whereHas('appointments', function ($q) {
+                $q->whereNull('parent_appointment_id');
+            })
+            ->with([
+                'payments',
+                'patient' => function ($q) {
+                    $q->with([
+                        'subscriptions.subscriptionPlan'
+                    ]);
+                },
+                'appointments' => function ($q) {
+                    $q->whereNull('parent_appointment_id');
+                },
+            ])
+            ->get();
+    }
+
+
+
 }

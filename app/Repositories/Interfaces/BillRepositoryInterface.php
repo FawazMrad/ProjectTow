@@ -14,4 +14,8 @@ interface BillRepositoryInterface
     public function create(array $data): Bill;
     public function update(int $id, array $data): bool;
     public function delete(int $id): bool;
+
+    public function findByIdWithPayments($billId);
+
+    public function searchByPatientName(string $patientName);
 }

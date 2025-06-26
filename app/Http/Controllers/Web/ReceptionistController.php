@@ -17,9 +17,10 @@ class ReceptionistController
         $this->receptionistService = $receptionistService;
     }
 
-    public function getReceptionist(Request $request)
+    public function getReceptionist($id)
     {
-        $receptionistId = $request->input('receptionistId');
+        $receptionistId = (int)$id;
+
         $data = $this->receptionistService->getUser($receptionistId);
         if ($data == null) {
             return response(['message' => 'receptionist not found'], 404);

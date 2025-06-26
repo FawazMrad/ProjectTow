@@ -106,7 +106,7 @@ class AppointmentRepository implements AppointmentRepositoryInterface
     }
     public function getAppointment(int $doctorId,int $appointmentId)
     {
-        return $this->userRepository->findById($doctorId)->doctorAppointments()->find($appointmentId);
+        return $this->userRepository->findById($doctorId)->doctorAppointments()->with('patient')->find($appointmentId);
     }
     public function getDoctorTodayAppointments(User $doctor)
     {
@@ -123,7 +123,7 @@ class AppointmentRepository implements AppointmentRepositoryInterface
         $startOfDay = Carbon::today()->startOfDay();
 
 
-        return $doctor->doctorAppointments()
+        return $doctor->doctorAppointments()->with('patient')
             ->where('start_time', '>=',$startOfDay)
             ->get()->sortBy('start_time')
             ->groupBy('status');

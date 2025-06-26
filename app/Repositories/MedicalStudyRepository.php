@@ -3,6 +3,8 @@
 namespace App\Repositories;
 
 use App\Models\MedicalStudy;
+use App\Models\Patient;
+use App\Models\User;
 use App\Repositories\Interfaces\MedicalStudyRepositoryInterface;
 
 class MedicalStudyRepository implements MedicalStudyRepositoryInterface
@@ -38,4 +40,15 @@ class MedicalStudyRepository implements MedicalStudyRepositoryInterface
         $study = MedicalStudy::find($id);
         return $study ? $study->delete() : false;
     }
+    public function allWithPatients(mixed $user)
+    {
+        return $user->medicalStudies()->with('patients')->get()->groupBy('is_active');
+    }
+    public function findByIdWithPatients($user,$medicalStudyId){
+        return MedicalStudy::with('volunteers')->findOrFail($medicalStudyId);
+    }
+    public function getVolunteers(){
+        return Patient::all()->where('is_study_volunteer',1);
+    }
+
 }

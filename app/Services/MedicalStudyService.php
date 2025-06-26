@@ -13,5 +13,22 @@ class MedicalStudyService
         $this->medicalStudyRepository = $medicalStudyRepository;
     }
 
-    // Business logic will be added here later
+
+    public function getMedicalStudies(mixed $user)
+    {
+        return $this->medicalStudyRepository->all();
+    }
+
+    public function getMedicalStudy(mixed $user,$medicalStudyId)
+    {
+        return $this->medicalStudyRepository->findByIdWithPatients($user,$medicalStudyId);
+    }
+    public function getMedicalStudyVolunteers($user){
+    return $this->medicalStudyRepository->getVolunteers();
+    }
+    public function create($data){
+    return $this->medicalStudyRepository->create($data);
+    }
+
+
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\DoctorApp;
 
+use App\Models\User;
 use App\Services\AppointmentImageService;
 use App\Services\AppointmentService;
 use App\Services\NotificationService;
@@ -44,14 +45,13 @@ class AppointmentController
         return response()->json($data, 200);
     }
 
-    public function viewAppointment(Request $request)
+    public function viewAppointment(Request $request, $id)
     {
         $doctorId = $request->user()->id;
-        $appointmentId = $request->appointment_id;
+        $appointmentId = $id;
         $data = $this->appointmentService->getAppointment($doctorId, $appointmentId);
         return response()->json($data, 200);
     }
-
     public function updateAppointment(Request $request)
     {
         $appointmentId = $request->appointment_id;

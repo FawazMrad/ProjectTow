@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('family_id')->nullable()->constrained('families')->onDelete('set null');
             $table->foreignId('patient_id')->nullable()->constrained('patients')->onDelete('set null');
             $table->foreignId('patient_subscription_id')->nullable()->constrained('patient_subscriptions')->onDelete('set null');
-            $table->enum('payment_status', ['PAID', 'UNPAID', 'PARTIAL'])->default('UNPAID');
+            $table->enum('payment_status', ['مدفوع', 'غير مدفوع', 'جزئي'])->default('غير مدفوع');
             $table->decimal('remain_amount', 10, 2)->default(0);
             $table->decimal('discount', 10, 2)->default(0);
             $table->boolean('is_family_bill')->default(false);

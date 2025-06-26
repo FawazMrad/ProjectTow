@@ -12,4 +12,10 @@ interface MedicalStudyRepositoryInterface
     public function create(array $data): MedicalStudy;
     public function update(int $id, array $data): bool;
     public function delete(int $id): bool;
+
+    public function allWithPatients(mixed $user);
+
+    public function findByIdWithPatients(mixed $user, int $medicalStudyId);
+
+    public function getVolunteers();
 }

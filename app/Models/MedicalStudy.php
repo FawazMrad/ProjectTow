@@ -24,7 +24,7 @@ class MedicalStudy extends Model
     {
         return $this->belongsTo(User::class, 'doctor_id');
     }
-    public function patients(): HasMany
+    public function volunteers(): HasMany
     {
         return $this->hasMany(Patient::class);
     }

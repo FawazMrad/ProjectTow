@@ -13,5 +13,16 @@ class BillService
         $this->billRepository = $billRepository;
     }
 
-    // Business logic will be added here later
+    public function getAllBills(){
+        return $this->billRepository->all();
+    }
+    public function getBillWithPayments($billId)
+    {
+        return $this->billRepository->findByIdWithPayments($billId);
+    }
+    public function searchByPatientName(string $patientName)
+    {
+        return $this->billRepository->searchByPatientName($patientName);
+    }
+
 }
