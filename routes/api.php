@@ -20,7 +20,7 @@ Route::prefix('web')->middleware('api')->group(function () {
         Route::get('homepage/receptionists', [HomePageController::class, 'indexReceptionists']);
         Route::get('receptionist/{id}', [\App\Http\Controllers\Web\ReceptionistController::class, 'getReceptionist']);
         Route::delete('receptionist/delete', [\App\Http\Controllers\Web\ReceptionistController::class, 'deleteReceptionist']);
-        Route::post('receptionist/get-logs', [\App\Http\Controllers\Web\ReceptionistController::class, 'getLogs']);
+        Route::get('receptionist/get-logs/{id}', [\App\Http\Controllers\Web\ReceptionistController::class, 'getLogs']);
         Route::post('receptionist/add', [\App\Http\Controllers\Web\ReceptionistController::class, 'addReceptionist']);
         Route::post('doctor-account/change-password', [\App\Http\Controllers\Auth\DoctorAuthController::class, 'changePassword']);
         Route::post('doctor-account/change-email', [\App\Http\Controllers\Auth\DoctorAuthController::class, 'changeEmail']);

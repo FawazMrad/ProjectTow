@@ -38,9 +38,9 @@ class ReceptionistController
             return response(['message' => 'receptionist deleted unsuccessfully'], 404);
     }
 
-    public function getLogs(Request $request)
+    public function getLogs($id)
     {
-        $receptionistId = $request->input('receptionistId');
+        $receptionistId = $id;
         $data = $this->receptionistService->getLogs($receptionistId);
         if ($data == null) {
             return response(['message' => 'there is no logs for this receptionist'], 404);
