@@ -19,10 +19,10 @@ class UserRepository implements UserRepositoryInterface
         return User::find($id);
     }
 
-    public function findDoctorByEmail(string $email): ?User
+    public function findByEmail(string $email,$type): ?User
     {
         return User::where('email', $email)
-            ->where('role', 'doctor')
+            ->where('role', $type)
             ->first();
     }
     public function create(array $data): User

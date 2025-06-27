@@ -15,23 +15,25 @@ class UserService
     {
         $this->userRepository = $userRepository;
     }
-    public function doctorLogin(array $credentials): ?array
+    public function login(array $credentials, string $type): ?array
     {
-        $user = $this->userRepository->findDoctorByEmail($credentials['email']);
+        $user = $this->userRepository->findByEmail($credentials['email'], $type);
 
         if (!$user || !Hash::check($credentials['password'], $user->password)) {
+        return null;
+    }
+
+        if ($user->role !== $type) {
             return null;
         }
-
-
-        $token = $user->createToken($credentials['device_name'])->plainTextToken;
-
+        $token = $user->createToken($credentials['device_name'] ?? 'default_device_name')->plainTextToken;
 
         return [
             'user' => $user,
-            'token' => $token,
+            'token' => $token
         ];
     }
+
 
     public function getReceptionists(): ?iterable{
         $receptionists=$this->userRepository->indexReceptionists();

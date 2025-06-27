@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\Auth\DoctorAuthController;
+use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Web\HomePageController;
 use Illuminate\Support\Facades\Route;
 
@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::prefix('web')->middleware('api')->group(function () {
 
-    Route::post('doctor-account/login', [DoctorAuthController::class, 'login']);
+    Route::post('doctor-account/login', [AuthController::class, 'doctorLogin']);
 
 
     Route::middleware('auth:sanctum')->group(function () {
@@ -22,10 +22,10 @@ Route::prefix('web')->middleware('api')->group(function () {
         Route::delete('receptionist/delete', [\App\Http\Controllers\Web\ReceptionistController::class, 'deleteReceptionist']);
         Route::get('receptionist/get-logs/{id}', [\App\Http\Controllers\Web\ReceptionistController::class, 'getLogs']);
         Route::post('receptionist/add', [\App\Http\Controllers\Web\ReceptionistController::class, 'addReceptionist']);
-        Route::post('doctor-account/change-password', [\App\Http\Controllers\Auth\DoctorAuthController::class, 'changePassword']);
-        Route::post('doctor-account/change-email', [\App\Http\Controllers\Auth\DoctorAuthController::class, 'changeEmail']);
+        Route::post('doctor-account/change-password', [\App\Http\Controllers\Auth\AuthController::class, 'changePassword']);
+        Route::post('doctor-account/change-email', [\App\Http\Controllers\Auth\AuthController::class, 'changeEmail']);
         Route::get('doctor-account/get-logs', [\App\Http\Controllers\Web\DoctorController::class, 'getLogs']);
-        Route::get('doctor-account/logout', [\App\Http\Controllers\Auth\DoctorAuthController::class, 'logout']);
+        Route::get('doctor-account/logout', [\App\Http\Controllers\Auth\AuthController::class, 'logout']);
 
 
     });
@@ -37,7 +37,7 @@ Route::prefix('web')->middleware('api')->group(function () {
 */
 Route::prefix('doctor')->middleware('api')->group(function () {
 
-    Route::post('login', [DoctorAuthController::class, 'login']);
+    Route::post('login', [AuthController::class, 'doctorLogin']);
 
 
     Route::middleware('auth:sanctum')->group(function () {
@@ -68,9 +68,17 @@ Route::prefix('doctor')->middleware('api')->group(function () {
 | RECEPTIONIST Routes
 |--------------------------------------------------------------------------
 */
-Route::prefix('receptionist')->middleware('auth:sanctum')->group(function () {
-  //  Route::get('patients', [PatientController::class, 'index']);
-    // Add more receptionist routes here
+Route::prefix('receptionist')->middleware('api')->group(function () {
+
+    Route::post('login', [AuthController::class, 'login']);
+
+    Route::middleware('auth:sanctum')->group(function () {
+        Route::get('logout', [\App\Http\Controllers\Auth\AuthController::class, 'logout']);
+        Route::post('change-password', [\App\Http\Controllers\Auth\AuthController::class, 'changePassword']);
+        Route::post('change-email', [\App\Http\Controllers\Auth\AuthController::class, 'changeEmail']);
+
+    });
+
 });
 
 /*
@@ -78,7 +86,15 @@ Route::prefix('receptionist')->middleware('auth:sanctum')->group(function () {
 | TRAINER Routes
 |--------------------------------------------------------------------------
 */
-Route::prefix('trainer')->middleware('auth:sanctum')->group(function () {
-   // Route::get('sessions', [TrainingSessionController::class, 'index']);
-    // Add more trainer routes here
+Route::prefix('trainer')->middleware('api')->group(function () {
+    Route::post('login', [AuthController::class, 'login']);
+
+    Route::middleware('auth:sanctum')->group(function () {
+        Route::get('logout', [\App\Http\Controllers\Auth\AuthController::class, 'logout']);
+        Route::post('change-password', [\App\Http\Controllers\Auth\AuthController::class, 'changePassword']);
+        Route::post('change-email', [\App\Http\Controllers\Auth\AuthController::class, 'changeEmail']);
+
+    });
+
 });
+

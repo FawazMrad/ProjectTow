@@ -13,7 +13,7 @@ interface UserRepositoryInterface
 
     public function findById(int $id): ?User;
 
-    public function findDoctorByEmail(string $email): ?User;
+    public function findByEmail(string $email,$type): ?User;
     public function create(array $data): User;
 
     public function update(int $id, array $data): bool;
@@ -24,5 +24,7 @@ interface UserRepositoryInterface
     public function updateEmail(User $user, string $newEmail): bool;
 
     public function getWeeklySchedules(User $doctor);
+
+
 
 }

@@ -14,24 +14,34 @@ class UserSeeder extends Seeder
 
         public function run(): void
     {
-        // 🩺 One Doctor
+//        User::factory()->create([
+//            'role' => 'DOCTOR',
+//            'user_name' => 'Dr. Ahmad Said',
+//            'email' => 'doctor@example.com',
+//        ]);
+//
+//        User::factory()->create([
+//            'role' => 'RECEPTIONIST',
+//            'user_name' => 'Receptionist Layla',
+//            'email' => 'layla@example.com',
+//        ]);
+//
+//        User::factory()->create([
+//            'role' => 'RECEPTIONIST',
+//            'user_name' => 'Receptionist Huda',
+//            'email' => 'huda@example.com',
+//        ]);
+
         User::factory()->create([
-            'role' => 'DOCTOR',
-            'user_name' => 'Dr. Ahmad Said',
-            'email' => 'doctor@example.com',
+            'role' => 'TRAINEE',
+            'user_name' => 'Trainer Huda',
+            'email' => 'trainer1@example.com',
         ]);
 
-        // 🛎️ Two Receptionists
         User::factory()->create([
-            'role' => 'RECEPTIONIST',
-            'user_name' => 'Receptionist Layla',
-            'email' => 'layla@example.com',
-        ]);
-
-        User::factory()->create([
-            'role' => 'RECEPTIONIST',
-            'user_name' => 'Receptionist Huda',
-            'email' => 'huda@example.com',
+            'role' => 'TRAINEE',
+            'user_name' => 'Trainer Ahmad',
+            'email' => 'ahmad@example.com',
         ]);
     }
 
