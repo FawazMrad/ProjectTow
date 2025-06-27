@@ -7,7 +7,7 @@ use App\Services\UserService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
-class DoctorAuthController extends Controller
+class AuthController extends Controller
 {
     public function __construct(protected UserService $userService)
     {
@@ -15,10 +15,22 @@ class DoctorAuthController extends Controller
 
     public function login(Request $request)
     {
+        $userType=$request->input('user_type');
+        $credentials = $request->validate(['email' => 'required|email', 'password' => 'required|string',
+        ]);
+
+        $result = $this->userService->login($credentials,$userType);
+
+        return $result ? response()->json($result,200) : response()->json(['message' => 'Invalid credentials'], 401);
+
+    }
+
+    public function doctorLogin(Request $request)
+    {
         $credentials = $request->validate(['email' => 'required|email', 'password' => 'required|string', 'device_name' => 'required|string', // 'web' or 'mobile
         ]);
 
-        $result = $this->userService->doctorLogin($credentials);
+        $result = $this->userService->login($credentials,'DOCTOR');
 
         return $result ? response()->json($result) : response()->json(['message' => 'Invalid credentials'], 401);
 
@@ -41,7 +53,7 @@ class DoctorAuthController extends Controller
          $data['password'] = $data['new_password'];
         $result = $this->userService->updatePassword($user, $data);
         return $result
-            ? response()->json(['message' => 'Password changed successfully'])
+            ? response()->json(['message' => 'Password changed successfully'],200)
             : response()->json(['message' => 'Failed to change password'], 500);
     }
 
@@ -68,8 +80,7 @@ class DoctorAuthController extends Controller
         }
 
         return response()->json([
-            'message' => 'Doctor logged out successfully from web',
-        ], 200);
+            'message' => 'User logged out successfully ',], 200);
     }
 
 
