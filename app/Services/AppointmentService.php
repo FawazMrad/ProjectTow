@@ -17,6 +17,10 @@ class AppointmentService
     {
         return $this->appointmentRepository->getAppointment($doctorId,$appointmentId);
     }
+    public function getParentAppointment($doctorId,$appointmentId)
+    {
+        return $this->appointmentRepository->getParentAppointment($doctorId,$appointmentId);
+    }
 
     public function getDoctorTodayAppointments(User $doctor){
         return $data=$this->appointmentRepository->getDoctorTodayAppointments($doctor);
@@ -27,6 +31,7 @@ class AppointmentService
         return $data=$this->appointmentRepository->getDoctorUpcomingAppointments($doctor);
 
     }
+
     public function updateAppointment($appointmentId,$data)
     {
         return $this->appointmentRepository->update($appointmentId,$data);

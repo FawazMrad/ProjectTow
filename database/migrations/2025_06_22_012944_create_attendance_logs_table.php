@@ -15,7 +15,7 @@ return new class extends Migration
                 $table->id();
                 $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
                 $table->foreignId('session_id')->nullable()->constrained('training_sessions')->onDelete('cascade');
-                $table->enum('status', ['PRESENT', 'LATE', 'ABSENT', 'SWAPPED']);
+                $table->enum('status', ['حضور', 'تأخير', 'غياب', 'تبديل']);
                 $table->dateTime('check_in')->nullable();
                 $table->dateTime('check_out')->nullable();
                 $table->enum('user_type', ['DOCTOR', 'RECEPTIONIST', 'TRAINEE']);

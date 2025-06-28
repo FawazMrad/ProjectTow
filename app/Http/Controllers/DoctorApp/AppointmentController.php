@@ -87,5 +87,16 @@ class AppointmentController
 
         return response()->json(['message' => 'Images added successfully.']);
     }
+    public function viewParentAppointment(Request $request,$id)
+    {
+        $doctorId = $request->user()->id;
+        $appointmentId = $id;
+        $data = $this->appointmentService->getParentAppointment($doctorId, $appointmentId);
+        if($data)
+            return response()->json($data, 200);
+
+        return response()->json("There is no parents for this", 404);
+
+    }
 
 }

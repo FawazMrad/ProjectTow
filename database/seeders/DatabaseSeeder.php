@@ -16,7 +16,6 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $this->call([
-            UserSeeder::class,
             AttendanceLogSeeder::class,
             WeeklyScheduleSeeder::class,
             MedicalStudySeeder::class,
@@ -26,6 +25,8 @@ class DatabaseSeeder extends Seeder
             PaymentSeeder::class,
             SubscriptionPlanSeeder::class,
             PatientSubscriptionPlanSeeder::class,
+            UserSeeder::class,
+            AppointmentImageSeeder::class,
         ]);
        // User::factory()->count(10)->create();
     }

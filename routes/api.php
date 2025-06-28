@@ -46,6 +46,8 @@ Route::prefix('doctor')->middleware('api')->group(function () {
         Route::get('appointments/view-today-appointments', [\App\Http\Controllers\DoctorApp\AppointmentController::class, 'viewTodayAppointments']);
         Route::get('appointments/view-upcoming-appointments', [\App\Http\Controllers\DoctorApp\AppointmentController::class, 'viewUpcomingAppointments']);
         Route::get('appointments/view-appointment/{id}', [\App\Http\Controllers\DoctorApp\AppointmentController::class, 'viewAppointment']);
+        Route::get('appointments/view-parent-appointments/{id}', [\App\Http\Controllers\DoctorApp\AppointmentController::class, 'viewParentAppointment']);
+        Route::get('appointment-images/view-appointment-images/{id}', [\App\Http\Controllers\DoctorApp\AppointmentImageController::class, 'viewAppointmentImages']);
         Route::post('appointments/update', [\App\Http\Controllers\DoctorApp\AppointmentController::class, 'updateAppointment']);
         Route::get('weekly-schedule/get-work-days', [\App\Http\Controllers\DoctorApp\WeeklyScheduleController::class, 'getWorkDays']);
         Route::post('appointments/schedule', [\App\Http\Controllers\DoctorApp\AppointmentController::class, 'scheduleAppointment']);

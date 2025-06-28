@@ -133,6 +133,31 @@ class AppointmentRepository implements AppointmentRepositoryInterface
         $appointment = $this->findById($appointmentId);
         return $appointment->patient()->first();
     }
+    public function getParentAppointment($doctorId, $appointmentId)
+    {
+        $parents = [];
 
+        $current = $this->findById($appointmentId);
+
+        // Validate access
+        if (!$current || $current->doctor_id !== $doctorId) {
+            return null;
+        }
+
+        while ($current && $current->parentAppointment()->first()) {
+            $parent = $current->parentAppointment()->first();
+
+            // Optional: Make sure the parent belongs to same doctor
+            if ($parent->doctor_id !== $doctorId) {
+                break;
+            }
+
+            $parents[] = $parent;
+
+            $current = $parent;
+        }
+
+        return $parents;
+    }
 
 }
