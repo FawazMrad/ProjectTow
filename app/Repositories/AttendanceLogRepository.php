@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Models\AttendanceLog;
 use App\Repositories\Interfaces\AttendanceLogRepositoryInterface;
+use Carbon\Carbon;
 
 class AttendanceLogRepository implements AttendanceLogRepositoryInterface
 {
@@ -39,5 +40,17 @@ class AttendanceLogRepository implements AttendanceLogRepositoryInterface
             ->where('user_type', $userType)
             ->whereBetween('check_in', [$startDate, $endDate])
             ->get();
+    }
+    public function hasCheckIn(int $doctorId, $date): bool
+    {
+        return AttendanceLog::where('user_id', $doctorId)
+            ->whereDate('check_in', $date->toDateString())
+            ->exists();
+    }
+    public function findByUserIdAndDate($user){
+        return AttendanceLog::where('user_id', $user->id)
+            ->whereDate('created_at', Carbon::today())
+            ->latest('check_in')
+            ->first();
     }
 }

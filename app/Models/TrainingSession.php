@@ -17,10 +17,10 @@ class TrainingSession extends Model
         'end_time'
     ];
 
-    public function attendanceLogs(): HasMany
-    {
-        return $this->hasMany(AttendanceLog::class, 'session_id');
-    }
+//    public function attendanceLogs(): HasMany
+//    {
+//        return $this->hasMany(AttendanceLog::class, 'session_id');
+//    }
     public function administrativeRequests(): HasMany
     {
         return $this->hasMany(AdministrativeRequest::class,'training_session_id');

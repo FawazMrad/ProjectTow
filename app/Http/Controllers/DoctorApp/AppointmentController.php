@@ -54,8 +54,13 @@ class AppointmentController
     }
     public function updateAppointment(Request $request)
     {
+        $doctorId = $request->user()->id;
         $appointmentId = $request->appointment_id;
         $data = $request->data;
+        if (isset($data['status']) && $data['status'] === 'مرفوض') {
+            $this->appointmentService->notifyReceptionForRejection($appointmentId,$doctorId);
+
+        }
         $result = $this->appointmentService->updateAppointment($appointmentId, $data);
         if ($result == null) {
             return response()->json(["message" => "Appointment not updated"], 404);
@@ -64,9 +69,10 @@ class AppointmentController
     }
    public function scheduleAppointment(Request $request)
    {
+       $doctorId = $request->user()->id;
        $appointmentId=$request->appointment_id;
-       $date=$request->date;
-       $this->notificationService->createSchedualedAppointmentNotificatoin( $appointmentId, $date);
+       $days=$request->days;
+       $this->notificationService->createSchedualedAppointmentNotificatoin( $appointmentId, $days,$doctorId);
        return response()->json(["message" => "Appointment scheduled"], 200);
 
 
@@ -98,5 +104,17 @@ class AppointmentController
         return response()->json("There is no parents for this", 404);
 
     }
+    public function delayAppointment(Request $request)
+    {
+        $doctorId = $request->user()->id;
+        $appointmentId=$request->appointment_id;
+        $numberOfDays= $request->days;
+        $data = $this->appointmentService->delayAppointment( $appointmentId, $numberOfDays,$doctorId);
+        if($data)
+            return response()->json("Receptionist notified for update this appointment", 200);
+
+        return response()->json("Cannot update this appointment", 500);
+    }
+
 
 }

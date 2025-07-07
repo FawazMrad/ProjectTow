@@ -67,7 +67,7 @@ class AppointmentRepository implements AppointmentRepositoryInterface
 
         $query = Appointment::query()
             ->where('doctor_id', $doctorId)
-            ->whereIn('status', ['معلق', 'مقبول'])
+            ->whereIn('status', ['معلق', 'مقبول','مؤجل'])
             ->whereIn(DB::raw('DATE(start_time)'), $dates);
 
         if (isset($newScheduleData['is_active']) && !$newScheduleData['is_active']) {
@@ -133,13 +133,13 @@ class AppointmentRepository implements AppointmentRepositoryInterface
         $appointment = $this->findById($appointmentId);
         return $appointment->patient()->first();
     }
+
     public function getParentAppointment($doctorId, $appointmentId)
     {
         $parents = [];
 
         $current = $this->findById($appointmentId);
 
-        // Validate access
         if (!$current || $current->doctor_id !== $doctorId) {
             return null;
         }

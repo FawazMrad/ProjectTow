@@ -17,6 +17,7 @@ Route::prefix('web')->middleware('api')->group(function () {
 
     Route::middleware('auth:sanctum')->group(function () {
         Route::get('homepage/receptionists-commitment', [HomePageController::class, 'receptionistCommitment']);
+        Route::get('profile', [AuthController::class, 'getProfile']);
         Route::get('homepage/receptionists', [HomePageController::class, 'indexReceptionists']);
         Route::get('receptionist/{id}', [\App\Http\Controllers\Web\ReceptionistController::class, 'getReceptionist']);
         Route::delete('receptionist/delete', [\App\Http\Controllers\Web\ReceptionistController::class, 'deleteReceptionist']);
@@ -52,6 +53,7 @@ Route::prefix('doctor')->middleware('api')->group(function () {
         Route::get('weekly-schedule/get-work-days', [\App\Http\Controllers\DoctorApp\WeeklyScheduleController::class, 'getWorkDays']);
         Route::post('appointments/schedule', [\App\Http\Controllers\DoctorApp\AppointmentController::class, 'scheduleAppointment']);
         Route::post('appointments/add-images', [\App\Http\Controllers\DoctorApp\AppointmentController::class, 'addImagesToAppointment']);
+        Route::post('appointments/delay', [\App\Http\Controllers\DoctorApp\AppointmentController::class, 'delayAppointment']);
         Route::get('patients/get-patient/{id}', [\App\Http\Controllers\DoctorApp\PatientController::class, 'getPatient']);
         Route::get('medical-studies', [\App\Http\Controllers\DoctorApp\MedicalStudyController::class, 'index']);
         Route::get('medical-studies/get/{id}', [\App\Http\Controllers\DoctorApp\MedicalStudyController::class, 'getMedicalStudy']);

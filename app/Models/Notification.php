@@ -12,6 +12,7 @@ class Notification extends Model
 
     protected $fillable = [
         'user_id',
+        'sender_id',
         'patient_id',
         'title',
         'body',
@@ -34,9 +35,13 @@ class Notification extends Model
     public const STATUS_FAILED = 'FAILED';
 
 
-    public function user(): BelongsTo
+    public function sender(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class,'sender_id');
+    }
+    public function receiver(): BelongsTo
+    {
+        return $this->belongsTo(User::class,'user_id');
     }
 
     public function patient(): BelongsTo

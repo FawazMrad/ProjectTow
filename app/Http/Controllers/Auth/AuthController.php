@@ -3,13 +3,15 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Services\AttendanceLogService;
 use App\Services\UserService;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
-    public function __construct(protected UserService $userService)
+    public function __construct(protected UserService $userService,protected AttendanceLogService $attendanceLogService)
     {
     }
 
@@ -20,7 +22,10 @@ class AuthController extends Controller
         ]);
 
         $result = $this->userService->login($credentials,$userType);
-
+        if ($userType === 'RECEPTIONIST') {
+            if(!$this->attendanceLogService->logCheckIn($result['user'],'RECEPTIONIST'))
+                return  response()->json(['message' => 'too early'], 401);;
+        }
         return $result ? response()->json($result,200) : response()->json(['message' => 'Invalid credentials'], 401);
 
     }
@@ -31,7 +36,10 @@ class AuthController extends Controller
         ]);
 
         $result = $this->userService->login($credentials,'DOCTOR');
-
+        if ($request->device_name === 'web') {
+           if( !$this->attendanceLogService->logCheckIn($result['user'],'DOCTOR'))
+               return    response()->json(['message' => 'too Early'], 401);;
+        }
         return $result ? response()->json($result) : response()->json(['message' => 'Invalid credentials'], 401);
 
     }
@@ -73,14 +81,24 @@ class AuthController extends Controller
     }
     public function logout(Request $request)
     {
-        $token = $request->user()->currentAccessToken();
-
+        $user = $request->user();
+        $userType=$user->role;
+        $token = $user->currentAccessToken();
         if ($token) {
             $token->delete();
+        }
+        if (in_array($userType, ['DOCTOR', 'RECEPTIONIST'])) {
+            $this->attendanceLogService->logLogout($user);
         }
 
         return response()->json([
             'message' => 'User logged out successfully ',], 200);
+    }
+    public function getProfile(Request $request)
+    {
+        $user = $request->user();
+
+        return response()->json([$user], 200);
     }
 
 

@@ -93,9 +93,14 @@ class User extends Authenticatable
     {
         return $this->hasMany(Appointment::class, 'receptionist_id');
     }
-    public function notifications(): HasMany
+    public function sentNotifications(): HasMany
     {
-        return $this->hasMany(Notification::class);
+        return $this->hasMany(Notification::class,'sender_id');
+    }
+
+    public function receivedNotifications(): HasMany
+    {
+        return $this->hasMany(Notification::class,'user_id');
     }
 
 }
