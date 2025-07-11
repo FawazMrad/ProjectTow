@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Models\Notification;
 use App\Repositories\Interfaces\NotificationRepositoryInterface;
+use Carbon\Carbon;
 
 class NotificationRepository implements NotificationRepositoryInterface
 {
@@ -19,7 +20,10 @@ class NotificationRepository implements NotificationRepositoryInterface
 
     public function findByUser(int $userId): iterable
     {
-        return Notification::where('user_id', $userId)->get();
+        return Notification::where('user_id', $userId)
+            ->orderBy('created_at', 'desc')
+            ->get()
+            ->groupBy('status');
     }
 
     public function findByPatient(int $patientId): iterable
@@ -47,5 +51,10 @@ class NotificationRepository implements NotificationRepositoryInterface
     {
         $notification = Notification::find($id);
         return $notification ? $notification->delete() : false;
+    }
+    public function markAsRead(Notification $notification){
+        $notification->seen_at=carbon::now();
+        $notification->status='تم الارسال';
+        $notification->save();
     }
 }

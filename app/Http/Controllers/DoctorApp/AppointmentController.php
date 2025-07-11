@@ -58,7 +58,7 @@ class AppointmentController
         $appointmentId = $request->appointment_id;
         $data = $request->data;
         if (isset($data['status']) && $data['status'] === 'مرفوض') {
-            $this->appointmentService->notifyReceptionForRejection($appointmentId,$doctorId);
+            $this->notificationService->notifyReceptionForRejection($appointmentId,$doctorId);
 
         }
         $result = $this->appointmentService->updateAppointment($appointmentId, $data);

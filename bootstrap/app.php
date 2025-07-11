@@ -13,8 +13,11 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withSchedule(function (\Illuminate\Console\Scheduling\Schedule $schedule) {
-        $schedule->command(\App\Console\Commands\MarkDoctorAbsence::class)
-            ->dailyAt('23:55');
+        $schedule->command(\App\Console\Commands\MarkUserAbsences::class)
+            ->dailyAt('23:59');
+
+        $schedule->command(\App\Console\Commands\AutoLogoutUsers::class)
+            ->dailyAt('00:01');
 
     })
     ->withMiddleware(function (Middleware $middleware): void {

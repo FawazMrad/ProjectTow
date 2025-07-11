@@ -63,6 +63,8 @@ Route::prefix('doctor')->middleware('api')->group(function () {
         Route::get('bills/', [\App\Http\Controllers\DoctorApp\BillController::class, 'index']);
         Route::get('bills/get/{id}', [\App\Http\Controllers\DoctorApp\BillController::class, 'getBillWithPayments']);
         Route::get('bills/search/{patient_name}', [\App\Http\Controllers\DoctorApp\BillController::class, 'search']);
+        Route::get('notifications', [\App\Http\Controllers\DoctorApp\NotificationController::class, 'index']);
+        Route::get('notifications/{id}', [\App\Http\Controllers\DoctorApp\NotificationController::class, 'getNotification']);
 
     });
 });

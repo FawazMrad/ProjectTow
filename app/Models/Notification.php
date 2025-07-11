@@ -19,7 +19,7 @@ class Notification extends Model
         'channel',
         'status',
         'is_scheduled',
-        'sent_at',
+        'seen_at',
         'is_reception_notification',
         'appointment_id'
     ];

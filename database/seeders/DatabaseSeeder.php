@@ -27,6 +27,7 @@ class DatabaseSeeder extends Seeder
             PatientSubscriptionPlanSeeder::class,
             UserSeeder::class,
             AppointmentImageSeeder::class,
+            DoctorNotificationSeeder::class,
         ]);
        // User::factory()->count(10)->create();
     }

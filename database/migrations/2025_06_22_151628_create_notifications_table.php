@@ -23,7 +23,7 @@ return new class extends Migration
             $table->enum('status', ['تم الارسال','انتظار', 'فشل الارسال'])->default('انتظار');
             $table->boolean('is_scheduled')->default(false);
             $table->boolean('is_reception_notification')->default(false);
-            $table->timestamp('sent_at')->nullable();
+            $table->timestamp('seen_at')->nullable();
             $table->timestamps();
 
 

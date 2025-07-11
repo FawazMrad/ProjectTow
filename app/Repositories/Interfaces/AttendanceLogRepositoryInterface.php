@@ -15,5 +15,9 @@ interface AttendanceLogRepositoryInterface
     public function getLogsByTypeAndDateRange(string $userType, $startDate, $endDate);
     public function hasCheckIn(int $doctorId, Carbon $date): bool;
     public function findByUserIdAndDate($user);
+    public function hasAbsenceLog(int $doctorId, Carbon $date): bool;
+    public function getActiveScheduledUsersForToday();
+    public function getMissingLogoutLogs();
 
+    public function autoLogout(\App\Models\User $user, mixed $log);
 }

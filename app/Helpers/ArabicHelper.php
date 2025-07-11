@@ -2,18 +2,20 @@
 
 namespace App\Helpers;
 
+use Illuminate\Support\Carbon;
+
 class ArabicHelper
 {
-    public function getArabicDayName(int $dayIndex): string
+    public function arabicDayName(Carbon $date): string
     {
         return [
-            'الاحد',     // 0
-            'الاثنين',   // 1
-            'الثلاثاء',  // 2
-            'الاربعاء',  // 3
-            'الخميس',    // 4
-            'الجمعة',    // 5
-            'السبت',     // 6
-        ][$dayIndex];
+            'Saturday'  => 'السبت',
+            'Sunday'    => 'الاحد',
+            'Monday'    => 'الاثنين',
+            'Tuesday'   => 'الثلاثاء',
+            'Wednesday' => 'الاربعاء',
+            'Thursday'  => 'الخميس',
+            'Friday'    => 'الجمعة',
+        ][$date->englishDayOfWeek];
     }
 }

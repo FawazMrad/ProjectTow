@@ -7,21 +7,24 @@ use App\Models\AttendanceLog;
 use App\Models\User;
 use App\Models\WeeklySchedule;
 use App\Repositories\Interfaces\AttendanceLogRepositoryInterface;
+use App\Repositories\Interfaces\UserRepositoryInterface;
 use Illuminate\Support\Carbon;
 
 class AttendanceLogService
 {
     protected AttendanceLogRepositoryInterface $attendanceRepo;
+    protected UserRepositoryInterface $userRepo;
 
-    public function __construct(AttendanceLogRepositoryInterface $attendanceRepo)
+    public function __construct(AttendanceLogRepositoryInterface $attendanceRepo, UserRepositoryInterface $userRepo)
     {
         $this->attendanceRepo = $attendanceRepo;
+        $this->userRepo = $userRepo;
     }
 
     public function logCheckIn(User $user,$userType)
     {
         $now       = Carbon::now();
-        $arabicDay = $this->arabicDayName($now);
+        $arabicDay = (new \App\Helpers\ArabicHelper)->arabicDayName($now);
         $schedule = WeeklySchedule::where('doctor_id', 1)
             ->where('day_of_week', $arabicDay)
             ->where('is_active', true)
@@ -59,33 +62,55 @@ class AttendanceLogService
         return true;
     }
 
-    public function markDoctorAbsences(): void
+    public function markUserAbsences(): void
     {
-        $today      = Carbon::today();
-        $arabicDay  = $this->arabicDayName($today);
+        $today = now()->startOfDay();
+        $arabicDay = (new \App\Helpers\ArabicHelper)->arabicDayName($today);
 
-        // كل الجداول المفعّلة لليوم
-        $schedules = WeeklySchedule::where('day_of_week', $arabicDay)
-            ->where('is_active', true)
-            ->get();
+        $users =$this->attendanceRepo->getActiveScheduledUsersForToday();
 
-        foreach ($schedules as $schedule) {
-            $doctorId = $schedule->doctor_id;
+        foreach ($users as $user) {
+            $userId = $user->id;
+            $userType = strtoupper($user->role);
 
-            // إذا لم يسجّل حضور نهار اليوم ‑ أضف غياب
-            if (!$this->attendanceRepo->hasCheckIn($doctorId, $today)) {
-                $this->attendanceRepo->create([
-                    'user_id'   => $doctorId,
-                    'status'    => 'غياب',
-                    'check_in'  => null,
-                    'user_type' => 'DOCTOR',
-                    'is_swapped'=> false,
-                    'created_at'=> $today->endOfDay(),
-                    'updated_at'=> $today->endOfDay(),
-                ]);
+            if (!in_array($userType, ['DOCTOR', 'RECEPTIONIST'])) {
+                continue;
             }
+            if ($this->attendanceRepo->hasCheckIn($userId, $today)) {
+                continue;
+            }
+            if ($this->attendanceRepo->hasAbsenceLog($userId, $today)) {
+                continue;
+            }
+            $this->attendanceRepo->create([
+                'user_id'    => $userId,
+                'status'     => 'غياب',
+                'check_in'   => null,
+                'check_out'  => null,
+                'user_type'  => $userType,
+                'is_swapped' => false,
+                'created_at' => now()->endOfDay(),
+                'updated_at' => now()->endOfDay(),
+            ]);
         }
     }
+
+public function autoLogoutUsers(){
+    $today = Carbon::now();
+    $logs = $this->attendanceRepo->getMissingLogoutLogs();
+
+
+    foreach ($logs as $log) {
+        $user = $this->userRepo->findById($log->user_id);
+        if (!$user) {
+            continue;
+        }
+        $this->attendanceRepo->autoLogout($user,$log);
+
+    }
+
+}
+
     public function logLogout(User $user): void
     {
 
@@ -99,11 +124,9 @@ class AttendanceLogService
         $log->check_out = $now;
 
         if (in_array($user->role, ['DOCTOR', 'RECEPTIONIST'])) {
-            $schedule = WeeklySchedule::where('doctor_id', $user->id)
-                ->where('day_of_week', $this->arabicDayName($now))
+            $schedule = WeeklySchedule:: where('day_of_week', (new \App\Helpers\ArabicHelper)->arabicDayName($now))
                 ->where('is_active', true)
                 ->first();
-
             if ($schedule) {
                 $scheduledEnd = Carbon::createFromTimeString($schedule->end_time);
                 $ninetyMinutesBeforeEnd = $scheduledEnd->copy()->subMinutes(90);
@@ -116,18 +139,7 @@ class AttendanceLogService
         $log->save();
     }
 
-    private function arabicDayName(Carbon $date): string
-    {
-        return [
-            'Saturday'  => 'السبت',
-            'Sunday'    => 'الاحد',
-            'Monday'    => 'الاثنين',
-            'Tuesday'   => 'الثلاثاء',
-            'Wednesday' => 'الاربعاء',
-            'Thursday'  => 'الخميس',
-            'Friday'    => 'الجمعة',
-        ][$date->englishDayOfWeek];
-    }
+
 
     public function getReceptionistCommitmentThisMonth(): array
     {

@@ -3,6 +3,8 @@
 namespace App\Repositories;
 
 use App\Models\AttendanceLog;
+use App\Models\User;
+use App\Models\WeeklySchedule;
 use App\Repositories\Interfaces\AttendanceLogRepositoryInterface;
 use Carbon\Carbon;
 
@@ -53,4 +55,45 @@ class AttendanceLogRepository implements AttendanceLogRepositoryInterface
             ->latest('check_in')
             ->first();
     }
+    public function hasAbsenceLog(int $doctorId, Carbon $date): bool
+    {
+        return AttendanceLog::where('user_id', $doctorId)
+            ->whereDate('created_at', $date)
+            ->where('status', 'غياب')
+            ->exists();
+    }
+    public function getActiveScheduledUsersForToday()
+    {
+        $today = now();
+        $arabicDay = (new \App\Helpers\ArabicHelper)->arabicDayName($today);
+
+        $doctorIds = WeeklySchedule::where('day_of_week', $arabicDay)
+            ->where('is_active', true)
+            ->pluck('doctor_id')
+            ->unique()
+            ->toArray();
+
+        // Get users with roles DOCTOR or RECEPTIONIST
+        return User::whereIn('id', $doctorIds)
+            ->orWhere('role', 'RECEPTIONIST')
+            ->get();
+    }
+
+public function getMissingLogoutLogs()
+{
+    $today = \Illuminate\Support\Carbon::now();
+    $yesterday = $today->copy()->subDay()->startOfDay();
+  return  AttendanceLog::whereNotNull('check_in')
+        ->whereNull('check_out')
+        ->whereDate('check_in', $yesterday)
+        ->get();
+}
+public function autoLogout($user,$log)
+{
+    $today = now();
+    $log->check_out = $today;
+    $log->save();
+    $user->tokens()->delete();
+}
+
 }
